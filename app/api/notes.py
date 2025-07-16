@@ -10,7 +10,7 @@ def create_note(user_id):
 
     if "error" in notes:
         return jsonify(notes), 404
-    return jsonify({"message":"Note Created!", "notes_id":notes["notes_id"]}), 201
+    return jsonify({"message":"Note Created!", "notes_id":notes["notes_id"]}), 200
 
 @notes_bp.route("/<int:user_id>", methods=["GET"])
 def get_note(user_id):
@@ -24,10 +24,11 @@ def get_note(user_id):
 def update_note(user_id, notes_id):
     data = request.get_json()
     notes = update_service(user_id, notes_id, data)
+    print(notes)
 
     if "error" in notes:
         return jsonify(notes), 404
-    return jsonify({"message":"Note Updated!"}), 201
+    return jsonify({"message":"Note Updated!", "rowCount":notes["rowCount"]}), 200
 
 @notes_bp.route("/<int:user_id>/<int:notes_id>", methods=["DELETE"])
 def delete_note(user_id, notes_id):
@@ -35,5 +36,5 @@ def delete_note(user_id, notes_id):
 
     if "error" in notes:
         return jsonify(notes), 404
-    return jsonify({"message":"Note Deleted!"}), 201
+    return jsonify({"message":"Note Deleted!", "rowCount":notes["rowCount"]}), 200
 

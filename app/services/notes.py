@@ -9,6 +9,7 @@ def create_service(user_id, data):
 
         result = create_store(user_id, data)
         if result:
+            # print(result)
             return {"notes_id":result}
         
     except Exception as e:

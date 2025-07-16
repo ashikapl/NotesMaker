@@ -32,13 +32,14 @@ def create_signUp():
     return jsonify({"message":"User Created Successfully!", "res":res["user_id"]}), 200
 
 # Login User
-@user_bp.route("/Login/<int:user_id>", methods=["POST"])
-def create_login(user_id):
+@user_bp.route("/Login", methods=["POST"])
+def create_login():
     data = request.get_json()
-    res = create_login_service(user_id, data)
+    # print('data :', data)
+    res = create_login_service(data)
 
     if "error" in res:
+        # print('res:', res)
         return jsonify(res), 404
     return jsonify({"message":"User Login Successfull!", "id":res["id"]}), 200
-
 
