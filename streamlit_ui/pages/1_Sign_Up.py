@@ -36,5 +36,13 @@ if st.button("Sign Up"):
         # st.write(response.status_code, response.text)
         if response.status_code == 200:
             st.success("User creation successful!")
+
+            # automatically fill email, password in login page 
+            # Store to session_state for login page
+            st.session_state.login_email= email
+            st.session_state.login_password = password
+
+            # redirect to login page
+            st.switch_page("pages/2_Login.py")
         else:
             st.error(f"Error: {response.status_code} - {response.text}")

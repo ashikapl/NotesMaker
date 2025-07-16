@@ -17,8 +17,11 @@ import streamlit as st
 # def login_view():
 st.title("🔐 Login")
 
-email = st.text_input("Email")
-password = st.text_input("Password", type="password")
+if "login_email" not in st.session_state:
+    st.session_state.login_email = ""
+
+email = st.text_input("Email", key="login_email")
+password = st.text_input("Password", type="password", key="login_password")
 if st.button("Login"):
     if not email or not password:
         st.error("All fields are required!")
@@ -29,5 +32,8 @@ if st.button("Login"):
         })
         if response.status_code == 200:
             st.success("Login successful!")
+
+            # redirect to Notes(home) page
+            st.switch_page("pages/3_Notes.py")
         else:
             st.error("Login failed.")      
