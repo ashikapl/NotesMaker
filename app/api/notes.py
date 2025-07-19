@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, Blueprint, request
 from app.services.notes import create_service, get_service, update_service, delete_service
+from app.utils.token_auth import token_required
 
 notes_bp = Blueprint("notes_bp", __name__)
 
-@notes_bp.route("/<int:user_id>", methods=["POST"])
+@notes_bp.route("/", methods=["POST"])
+@token_required
 def create_note(user_id):
     data = request.get_json()
     notes = create_service(user_id, data)
@@ -12,15 +14,18 @@ def create_note(user_id):
         return jsonify(notes), 404
     return jsonify({"message":"Note Created!", "notes_id":notes["notes_id"]}), 200
 
-@notes_bp.route("/<int:user_id>", methods=["GET"])
+@notes_bp.route("/", methods=["GET"])
+@token_required
 def get_note(user_id):
     notes = get_service(user_id)
 
     if "error" in notes:
         return jsonify(notes), 404
-    return jsonify(notes), 200
+    return jsonify(notes), 200  # ✅ will always have 'notes': []
 
-@notes_bp.route("/<int:user_id>/<int:notes_id>", methods=["PUT"])
+
+@notes_bp.route("/<int:notes_id>", methods=["PUT"])
+@token_required
 def update_note(user_id, notes_id):
     data = request.get_json()
     notes = update_service(user_id, notes_id, data)
@@ -30,7 +35,8 @@ def update_note(user_id, notes_id):
         return jsonify(notes), 404
     return jsonify({"message":"Note Updated!", "rowCount":notes["rowCount"]}), 200
 
-@notes_bp.route("/<int:user_id>/<int:notes_id>", methods=["DELETE"])
+@notes_bp.route("/<int:notes_id>", methods=["DELETE"])
+@token_required
 def delete_note(user_id, notes_id):
     notes = delete_service(user_id, notes_id)
 

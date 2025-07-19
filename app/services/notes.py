@@ -15,21 +15,31 @@ def create_service(user_id, data):
     except Exception as e:
         return {"error":str(e)}
     
-# get notes
+# # get notes
+# def get_service(user_id):
+#     try:
+#         if not user_validator(user_id):
+#             return {"error":"Invalid User!"}
+    
+#         result = get_store(user_id)
+#         if result:
+#             return {"notes": result}
+#         else:
+#             return {"message": "No notes are there!"}
+        
+#     except Exception as e:
+#         return {"error": str(e)}
+    
 def get_service(user_id):
     try:
         if not user_validator(user_id):
             return {"error":"Invalid User!"}
     
         result = get_store(user_id)
-        if result:
-            return result
-        else:
-            return {"message": "No notes are there!"}
+        return {"notes": result or []}  # ✅ Always return a list under 'notes'
         
     except Exception as e:
         return {"error": str(e)}
-
     
 # update notes
 def update_service(user_id, notes_id, data):

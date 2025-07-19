@@ -41,5 +41,5 @@ def create_login():
     if "error" in res:
         # print('res:', res)
         return jsonify(res), 404
-    return jsonify({"message":"User Login Successfull!", "id":res["id"]}), 200
+    return jsonify({"message":"User Login Successfull!", "token":res["token"]}), 200
 
