@@ -1,3 +1,4 @@
+import pymysql
 from app.stores.user import create_signUp_store, create_login_store
 from app.utils.user_validator import user_validator_login
 from app.utils.create_token import generate_token
@@ -8,8 +9,12 @@ def create_signUp_service(data):
         result = create_signUp_store(data)
         if result:
             return {"user_id": result[0], "message": result[1]}
+    except pymysql.err.IntegrityError as e:
+        if "Duplicate entry" in str(e):
+            return {"error": "Email already exists."}
+        return {"error": "Database integrity error."}
     except Exception as e:
-        return {"error":str(e)}
+        return {"error": "Something went wrong. Please try again later."}
 
 def create_login_service(data):
     try:
